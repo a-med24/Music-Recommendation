@@ -16,10 +16,10 @@ How It Works:
 
 - Choose the Genre dropdown to pick a genre
 - Genre image updates at the bottom of the screen to match selection
-
+  
 - Choose the Duration Dropdown to pick between the options: Short (< 2 Minutes), Medium (2-4 minutes), Long (4+ minutes)
 - Press the "Get Your Songs" button to go to the results screen
-- 
+  
 - The app filters the songs and shows a random song of the filtered options
 - The result shows the Song Name, Artist, and Album Cover Image
 - A button to showcase the next song can be used to display another matching song from the filtered list
