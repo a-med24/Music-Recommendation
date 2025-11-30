@@ -1,0 +1,152 @@
+// Variables
+
+var UserGenre;
+var UserDuration;
+
+var AlbumCover = getColumn("Songs", "IMURL");
+var SongName = getColumn("Songs", "Track");
+var SongArtist = getColumn("Songs", "Artist");
+var Duration = getColumn("Songs", "Duration");
+var SongGenre = getColumn("Songs", "Genre");
+var GenrePic = getColumn("Genres", "ImageURL");
+var Genres = getColumn("Genres", "Genres");
+
+var genreIndex = 0;
+
+// Variables for Filtered Lists
+
+var FilteredGenreList;
+var FilteredSongList;
+var FilteredArtistsList;
+var FilteredImageList;
+
+// Setting Genre Image
+
+setImageURL("GenrePic", GenrePic[genreIndex]);
+
+// Change of Screen + Display Results
+
+onEvent("Transition1", "click", function( ) {
+
+  setScreen("RecSong");
+
+  UserGenre = getText("GenreDD");
+  UserDuration = getText("DurationDD");
+
+  FilteredGenreList = FilterGenre(UserGenre);
+  FilteredSongList = FilterDuration(FilteredGenreList);
+  FilteredArtistsList = FilterArtistDuration(FilteredGenreList);
+  FilteredImageList = FilterImageDuration(FilteredGenreList);
+
+  DisplaySongs(FilteredSongList, FilteredArtistsList, FilteredImageList);
+});
+
+
+// Next song of filtered list plays
+
+onEvent("NextSong", "click", function( ) {
+  if (FilteredSongList.length > 1) {
+    DisplaySongs(FilteredSongList, FilteredArtistsList, FilteredImageList);
+  } else {
+    setProperty("SongOutput", "text", "No other songs :(");
+  }
+});
+
+// Return to home screen
+
+onEvent("Back", "click", function( ) {
+  setScreen("Home");
+});
+ 
+// Get UserGenre
+
+onEvent("GenreDD", "change", function( ) {
+  UserGenre = getText("GenreDD");
+  genreIndex = Genres.indexOf(UserGenre);
+  setImageURL("GenrePic", GenrePic[genreIndex]);
+});
+
+// Filter song list by user's genre
+
+function FilterGenre(genre) {
+  var tempList = [];
+  for (var i = 0; i < SongGenre.length; i++) {
+    var chosenGenre = SongGenre[i];
+    if (chosenGenre.includes(genre)) {
+      appendItem(tempList, i);
+    }
+  }  
+
+  console.log (tempList);
+  return tempList;
+}
+
+// Filter Song Duration
+function FilterDuration (list) {
+  var tempList = [];
+  for (var i = 0; i < list.length; i++) {
+    var chosenDuration = list[i];
+    var songDuration = Duration[chosenDuration];
+    if (UserDuration === "Short" && songDuration < 2) {
+      appendItem(tempList, SongName[chosenDuration]);
+    } else if (UserDuration === "Medium" && songDuration >= 2 && songDuration < 4) {
+      appendItem(tempList, SongName[chosenDuration]);
+    } else if (UserDuration === "Long" && songDuration >= 4) {
+      appendItem(tempList, SongName[chosenDuration]);
+    }
+  }
+  console.log (tempList);
+  return tempList;
+}
+
+// Filter the artists of the filtered songs
+
+function FilterArtistDuration (list) {
+  var tempList = [];
+  for (var i = 0; i < list.length; i++) {
+    var chosenDuration = list[i];
+    var songDuration = Duration[chosenDuration];
+    if (UserDuration === "Short" && songDuration < 2) {
+      appendItem(tempList, SongArtist[chosenDuration]);
+    } else if (UserDuration === "Medium" && songDuration >= 2 && songDuration < 4) {
+      appendItem(tempList, SongArtist[chosenDuration]);
+    } else if (UserDuration === "Long" && songDuration >= 4) {
+      appendItem(tempList, SongArtist[chosenDuration]);
+    }
+  }
+  console.log (tempList);
+  return tempList;
+}
+
+// Filter the Album Covers of the filtered songs
+
+function FilterImageDuration(list) {
+  var tempList = [];
+  for (var i = 0; i < list.length; i++) {
+    var chosenDuration = list[i];
+    var songDuration = Duration[chosenDuration];
+    if (UserDuration === "Short" && songDuration < 2) {
+      appendItem(tempList, AlbumCover[chosenDuration]);
+    } else if (UserDuration === "Medium" && songDuration >= 2 && songDuration < 4) {
+      appendItem(tempList, AlbumCover[chosenDuration]);
+    } else if (UserDuration === "Long" && songDuration >= 4) {
+      appendItem(tempList, AlbumCover[chosenDuration]);
+    }
+ }
+  console.log (tempList);
+  return tempList;
+}
+
+// Display Song Results
+function DisplaySongs(filteredList, filteredArtistList, filteredImageList) {
+  if (filteredList.length > 0) {
+    var currentSongIndex = randomNumber(0, filteredList.length - 1);
+    var currentSong = filteredList[currentSongIndex];
+    var currentSongArtist = filteredArtistList[currentSongIndex];
+    var currentImage = filteredImageList[currentSongIndex];
+    setProperty("SongOutput", "text", currentSong + " by " + currentSongArtist);
+    setImageURL("AlbumResult", currentImage);
+  } else {
+    setProperty("SongOutput", "text", "Sorry! No songs were found, try other conditions :)");
+  }
+}
