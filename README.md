@@ -31,4 +31,5 @@ How It Works:
 
 
 Demo:
-<video src="https://githubusercontent.com" width="100%" controls></video>
+<video src="https://github.com/a-med24/Music-Recommendation/blob/main/MusicRecommenderVideo.mp4" width="100%" controls></video>
+
