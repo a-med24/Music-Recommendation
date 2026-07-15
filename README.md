@@ -30,5 +30,6 @@ How It Works:
 - The dataset utilized was one I created with my own research. The data table has about ~75+ songs
 
 
-Demo: 
+Demo:
+
 <video src="https://github.com/a-med24/Music-Recommendation/blob/main/MusicRecommenderVideo%20(4).mp4"width="100%" controls></video>
